@@ -19,7 +19,7 @@ bool require(const std::set<std::string> & keys,
 
     if (i == parameters.end()) {
       std::cerr << "Missing module argument: " << key << std::endl;
-      returnVal = true;
+      returnVal = false;
     }
   }
 
