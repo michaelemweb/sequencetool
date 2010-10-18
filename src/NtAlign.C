@@ -26,6 +26,19 @@ void handleParseException(seq::ParseException& e)
     exit(1);
 }
 
+void writeSequenceWithoutInsertions(std::ostream& o,
+				    const seq::NTSequence& reference,
+				    const seq::NTSequence& target)
+{
+  o << ">" << target.name() << " " << target.description() << std::endl;
+
+  for (unsigned i = 0; i < reference.size(); ++i)
+    if (reference[i] != seq::Nucleotide::GAP)
+      o << target[i];
+
+  o << std::endl;
+}
+
 void NtAlign::execute(std::map<std::string, std::string> & parameters)
 {
   std::set<std::string> requiredKeys;
@@ -36,25 +49,25 @@ void NtAlign::execute(std::map<std::string, std::string> & parameters)
   if (!require(requiredKeys, parameters))
     exit(1);
 
-  std::cerr << "reference" << parameters["reference"].c_str() << std::endl;
-  std::cerr << "target" << parameters["target"].c_str() << std::endl;
+  const int cutoff = atoi(parameters["cutoff"].c_str());
 
   std::ifstream reference_f(parameters["reference"].c_str());
   std::ifstream target_f(parameters["target"].c_str());
 
+  std::ofstream output_f(parameters["output"].c_str());
+
   try {
     seq::NTSequence reference;
     reference_f >> reference;
-    std::cout << reference;
     
     while (target_f) {
       seq::NTSequence s;
       target_f >> s;
       if (target_f) {
-	//TODO
-	//need to copy ref seq, otherwise after aligning with a target with insertions, the seq will contain gaps 
-	double d = seq::Align(reference, s);
-	
+	seq::NTSequence r = reference;
+	double score = seq::Align(r, s);
+	if (score >= cutoff)
+	  writeSequenceWithoutInsertions(output_f, r, s);
       }
     }
   } catch(seq::ParseException& e) {
