@@ -14,7 +14,7 @@ int main(int argc, char **argv) {
   if(argc < obligatoryParams + 1) {
     std::cerr << "Please provide a module." << std::endl;
     std::cerr << "The following modules are available: "
-	      << "nt_align "
+	      << "nt-align "
 	      << "fasta-convert " << std::endl;
     exit(0);
   }
@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
     }
   }
 
-  if (module == "nt_align") {
+  if (module == "nt-align") {
     NtAlign align;
     align.execute(parameters);
   } else if (module == "fasta-convert") {
