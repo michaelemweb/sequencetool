@@ -6,24 +6,14 @@
 #include "Utils.h"
 
 #include <set>
+#include <vector>
 #include <iostream>
 #include <fstream>
+
 #include <stdlib.h>
 
 NtAlign::NtAlign()
 {
-}
-
-void handleParseException(seq::ParseException& e)
-{
-  if (e.recovered())
-    std::cout << e.name() << ",\"" << e.message() << "\",,,,,"
-	      << std::endl;
-  else
-    std::cerr << "Fatal error: " << e.message() << std::endl;
-  
-  if (!e.recovered())
-    exit(1);
 }
 
 void writeSequenceWithoutInsertions(std::ostream& o,
@@ -41,11 +31,11 @@ void writeSequenceWithoutInsertions(std::ostream& o,
 
 void NtAlign::execute(std::map<std::string, std::string> & parameters)
 {
-  std::set<std::string> requiredKeys;
-  requiredKeys.insert("reference");
-  requiredKeys.insert("target");
-  requiredKeys.insert("output");
-  requiredKeys.insert("cutoff");
+  std::vector<Parameter> requiredKeys;
+  requiredKeys.push_back(Parameter("reference"));
+  requiredKeys.push_back(Parameter("target"));
+  requiredKeys.push_back(Parameter("output"));
+  requiredKeys.push_back(Parameter("cutoff"));
   if (!require(requiredKeys, parameters))
     exit(1);
 
