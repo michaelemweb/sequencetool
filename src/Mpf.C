@@ -48,5 +48,8 @@ int main(int argc, char **argv) {
   } else if (module == "fasta-convert") {
     FastaConvert convert;
     convert.execute(parameters);
+  } else {
+    std::cerr << "No module named '" << module << "' is available." << std::endl;
+    exit(0);
   }
 }
