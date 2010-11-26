@@ -1,6 +1,8 @@
 SET(SOURCES
   Mpf.C
+  Utils.C
   NtAlign.C
+  FastaConvert.C
 )
 
 #INCLUDE_DIRECTORIES(/opt/software/include/boost-1_37)

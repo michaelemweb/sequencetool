@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "NtAlign.h"
+#include "FastaConvert.h"
 
 int main(int argc, char **argv) {
   unsigned int i;
@@ -13,7 +14,8 @@ int main(int argc, char **argv) {
   if(argc < obligatoryParams + 1) {
     std::cerr << "Please provide a module." << std::endl;
     std::cerr << "The following modules are available: "
-	      << "nt_align " << std::endl;
+	      << "nt-align "
+	      << "fasta-convert " << std::endl;
     exit(0);
   }
   std::string module = argv[1];
@@ -40,8 +42,14 @@ int main(int argc, char **argv) {
     }
   }
 
-  if (module == "nt_align") {
+  if (module == "nt-align") {
     NtAlign align;
     align.execute(parameters);
+  } else if (module == "fasta-convert") {
+    FastaConvert convert;
+    convert.execute(parameters);
+  } else {
+    std::cerr << "No module named '" << module << "' is available." << std::endl;
+    exit(0);
   }
 }
