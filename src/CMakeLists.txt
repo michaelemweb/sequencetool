@@ -5,7 +5,7 @@ SET(SOURCES
   FastaConvert.C
 )
 
-#INCLUDE_DIRECTORIES(/opt/software/include/boost-1_37)
+INCLUDE_DIRECTORIES(/opt/software/boost1_43/include)
 
 ADD_EXECUTABLE(mpf-sequencetool ${SOURCES})
 
