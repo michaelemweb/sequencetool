@@ -3,6 +3,8 @@ SET(SOURCES
   Utils.C
   NtAlign.C
   FastaConvert.C
+  ssw_cpp.cpp
+  ssw.c
 )
 
 INCLUDE_DIRECTORIES(/opt/software/boost1_43/include)
