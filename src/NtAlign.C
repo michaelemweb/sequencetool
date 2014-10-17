@@ -155,6 +155,7 @@ void NtAlign::execute(std::map<std::string, std::string> & parameters)
 	int begin = 0;
 	int end = reference.size();
 
+	/*
 	std::string d = s.description();
 	boost::trim(d);
 	if (!d.empty()) {
@@ -170,6 +171,7 @@ void NtAlign::execute(std::map<std::string, std::string> & parameters)
 				.c_str()) + MARGIN);
 	  }
 	}
+	*/
 
 	seq::NTSequence r(reference.begin() + begin, reference.begin() + end);
 
