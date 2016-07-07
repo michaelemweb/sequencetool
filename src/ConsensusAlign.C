@@ -1,7 +1,7 @@
 #include "ConsensusAlign.h"
 
 #include "NTSequence.h"
-#include "Align.h"
+#include "NeedlemanWunsh.h"
 
 #include "Utils.h"
 
@@ -152,6 +152,7 @@ void ConsensusAlign::execute(std::map<std::string, std::string> & parameters)
   std::ofstream output_f(parameters["output"].c_str());
 
   std::vector<seq::NTSequence> alignment;
+  seq::NeedlemanWunsh nmw;
 
   try {
     seq::NTSequence reference;
@@ -172,8 +173,8 @@ void ConsensusAlign::execute(std::map<std::string, std::string> & parameters)
 
 	double score1, score2;
 	if (false && (r.size() * s.size() < 5000 * 5000)) {
-	  score1 = seq::Align(r1, s1);
-	  score2 = seq::Align(r2, s2);
+	  score1 = nmw.align(r1, s1);
+	  score2 = nmw.align(r2, s2);
 	} else {
 	  score1 = sswAlignFull(r1, s1);
 	  score2 = sswAlignFull(r2, s2);
@@ -186,7 +187,7 @@ void ConsensusAlign::execute(std::map<std::string, std::string> & parameters)
 	  seq::NTSequence& rr = use1 ? r1 : r2;
 	  seq::NTSequence& ss = use1 ? s1 : s2;
 
-	  std::cout << rr << ss;
+	  // std::cout << rr << ss;
 
 	  mergeAlign(rr, ss, alignment);
 	}

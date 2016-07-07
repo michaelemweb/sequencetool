@@ -1,7 +1,7 @@
 #include "NtAlign.h"
 
 #include "NTSequence.h"
-#include "Align.h"
+#include "NeedlemanWunsh.h"
 
 #include "Utils.h"
 
@@ -133,6 +133,8 @@ void NtAlign::execute(std::map<std::string, std::string> & parameters)
 
   std::ofstream output_f(parameters["output"].c_str());
 
+  seq::NeedlemanWunsh nmw;
+
   try {
     seq::NTSequence reference;
     reference_f >> reference;
@@ -167,10 +169,10 @@ void NtAlign::execute(std::map<std::string, std::string> & parameters)
 	if (r.size() * s.size() < 5000 * 5000) {
 	  seq::NTSequence r1 = r;
 	  seq::NTSequence s1 = s;
-	  double score1 = seq::Align(r1, s1);
+	  double score1 = nmw.align(r1, s1);
 	  seq::NTSequence r2 = r;
 	  seq::NTSequence s2 = s.reverseComplement();
-	  double score2 = seq::Align(r2, s2);
+	  double score2 = nmw.align(r2, s2);
 	  if (std::max(score1, score2) >= cutoff) {
 	    bool use1 = score1 > score2;
 	    seq::NTSequence& rr = use1 ? r1 : r2;

@@ -31,13 +31,13 @@ void FastaConvert::execute(std::map<std::string, std::string> & parameters)
   std::ofstream output_f(parameters["output-file"].c_str());
   std::string format = parameters["output-format"];
 
-  std::set<seq::NTSequence> sequences;
+  std::vector<seq::NTSequence> sequences;
   try {
     while (input_f) {
       seq::NTSequence s;
       input_f >> s;
       if (input_f)
-	sequences.insert(s);
+	sequences.push_back(s);
     }
   } catch(seq::ParseException& e) {
     handleParseException(e);

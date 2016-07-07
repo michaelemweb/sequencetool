@@ -128,18 +128,20 @@ void MakeConsensus::execute(std::map<std::string, std::string> & parameters)
 
 	std::set<seq::Nucleotide> have, have_0;
 
-	for (int i = 0; i < 4; ++i) {
-	  if (base_counts[i] >= minCount)
-	    have.insert(seq::Nucleotide::fromRep(i));
-	  if (base_counts[i] > 0)
-	    have_0.insert(seq::Nucleotide::fromRep(i));
+	for (int k = 0; k < 4; ++k) {
+	  if (base_counts[k] >= minCount)
+	    have.insert(seq::Nucleotide::fromRep(k));
+	  if (base_counts[k] > 0)
+	    have_0.insert(seq::Nucleotide::fromRep(k));
 	}
 
-	if (have.empty())
-	  have = have_0;
+	if (!have.empty() || ref[i] != seq::Nucleotide::GAP) {
+	  if (have.empty())
+	    have = have_0;
 
-	seq::Nucleotide result = seq::Nucleotide::singleNucleotide(have);
-	contig.push_back(result);
+	  seq::Nucleotide result = seq::Nucleotide::singleNucleotide(have);
+	  contig.push_back(result);
+	}
       }
     }
 
