@@ -64,8 +64,6 @@ void getQueryWithoutInsertions(seq::NTSequence& ref, seq::NTSequence& query,
     int length = cigar[i] >> 4;
     int op = cigar[i] & 0xF;
 
-    std::cerr << "length: " << length << " op" << op << std::endl;
-
     switch (op) {
     case 0: // M
     case 7: // =
@@ -85,8 +83,6 @@ void getQueryWithoutInsertions(seq::NTSequence& ref, seq::NTSequence& query,
     case 4: // S
       // ignoring since that seems to be quite inconsistent?
       break;
-    cefault:
-      std::cerr << "Oops" << std::endl;
     }
   }
 
@@ -96,9 +92,6 @@ void getQueryWithoutInsertions(seq::NTSequence& ref, seq::NTSequence& query,
 
   for (unsigned i = ref_end; i < ref.size(); ++i)
     query.push_back(seq::Nucleotide::GAP);
-
-  std::cerr << "ref length: " << ref.size()
-	    << "query length: " << query.size() << std::endl;
 }
 
 double sswAlign(seq::NTSequence& ref, seq::NTSequence& target)
@@ -119,8 +112,6 @@ double sswAlign(seq::NTSequence& ref, seq::NTSequence& target)
 			    alignment.query_begin,
 			    alignment.query_end,
 			    alignment.cigar);
-			    
-  std::cerr << alignment.cigar_string << std::endl;
 
   return alignment.sw_score;
 }
@@ -145,8 +136,6 @@ void NtAlign::execute(std::map<std::string, std::string> & parameters)
   try {
     seq::NTSequence reference;
     reference_f >> reference;
-
-    std::cerr << reference.size() << std::endl;
 
     while (target_f) {
       seq::NTSequence s;
@@ -175,15 +164,41 @@ void NtAlign::execute(std::map<std::string, std::string> & parameters)
 
 	seq::NTSequence r(reference.begin() + begin, reference.begin() + end);
 
-	double score;
 	if (r.size() * s.size() < 5000 * 5000) {
-	  score = seq::Align(r, s);
-	  if (score >= cutoff)
-	    writeSequenceWithoutInsertions(output_f, r, s, begin, reference.size());
+	  seq::NTSequence r1 = r;
+	  seq::NTSequence s1 = s;
+	  double score1 = seq::Align(r1, s1);
+	  seq::NTSequence r2 = r;
+	  seq::NTSequence s2 = s.reverseComplement();
+	  double score2 = seq::Align(r2, s2);
+	  if (std::max(score1, score2) >= cutoff) {
+	    bool use1 = score1 > score2;
+	    seq::NTSequence& rr = use1 ? r1 : r2;
+	    seq::NTSequence& ss = use1 ? s1 : s2;
+	    writeSequenceWithoutInsertions(output_f, rr, ss, 
+					   begin, reference.size());
+	    if (use1)
+	      std::cerr << s;
+	    else
+	      std::cerr << s.reverseComplement();
+	  }
 	} else {
-	  score = sswAlign(r, s);
-	  if (score >= cutoff)
-	    output_f << s;
+	  seq::NTSequence r1 = r;
+	  seq::NTSequence s1 = s;
+	  double score1 = sswAlign(r1, s1);
+	  seq::NTSequence r2 = r;
+	  seq::NTSequence s2 = s.reverseComplement();
+	  double score2 = sswAlign(r2, s2);
+	  if (std::max(score1, score2) >= cutoff) {
+	    bool use1 = score1 > score2;
+	    seq::NTSequence& ss = use1 ? s1 : s2;
+	    output_f << ss;
+
+	    if (use1)
+	      std::cerr << s;
+	    else
+	      std::cerr << s.reverseComplement();
+	  }
 	}
       }
     }

@@ -5,7 +5,9 @@
 #include <stdlib.h>
 
 #include "NtAlign.h"
+#include "ConsensusAlign.h"
 #include "FastaConvert.h"
+#include "MakeConsensus.h"
 
 int main(int argc, char **argv) {
   unsigned int i;
@@ -15,6 +17,7 @@ int main(int argc, char **argv) {
     std::cerr << "Please provide a module." << std::endl;
     std::cerr << "The following modules are available: "
 	      << "nt-align "
+	      << "consensus-align "
 	      << "fasta-convert " << std::endl;
     exit(0);
   }
@@ -45,6 +48,12 @@ int main(int argc, char **argv) {
   if (module == "nt-align") {
     NtAlign align;
     align.execute(parameters);
+  } else if (module == "consensus-align") {
+    ConsensusAlign align;
+    align.execute(parameters);
+  } else if (module == "make-consensus") {
+    MakeConsensus make;
+    make.execute(parameters);
   } else if (module == "fasta-convert") {
     FastaConvert convert;
     convert.execute(parameters);

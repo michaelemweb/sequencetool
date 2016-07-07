@@ -3,6 +3,8 @@ SET(SOURCES
   Utils.C
   NtAlign.C
   FastaConvert.C
+  ConsensusAlign.C
+  MakeConsensus.C
   ssw_cpp.cpp
   ssw.c
 )
