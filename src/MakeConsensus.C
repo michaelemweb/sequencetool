@@ -3,12 +3,12 @@
 #include "NTSequence.h"
 #include "Utils.h"
 
-#include <boost/algorithm/string.hpp>
-#include <boost/lexical_cast.hpp>
 #include <set>
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include <string>
 
 #include <stdlib.h>
 
@@ -40,8 +40,9 @@ int lastNonGap(const seq::NTSequence& seq)
 
 void writeContig(std::ostream& o, seq::NTSequence& contig, int index)
 {
-  contig.setName("contig_" + boost::lexical_cast<std::string>(index)
-		 + "_len_" + boost::lexical_cast<std::string>(contig.size()));
+  std::stringstream s;
+  s << "contig_" << index << "_len_" << contig.size();
+  contig.setName(s.str());
   o << contig;
 }
 

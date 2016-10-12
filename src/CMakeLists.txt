@@ -9,8 +9,6 @@ SET(SOURCES
   ssw.c
 )
 
-INCLUDE_DIRECTORIES(/opt/software/boost1_43/include)
-
 ADD_EXECUTABLE(mpf-sequencetool ${SOURCES})
 
 TARGET_LINK_LIBRARIES(mpf-sequencetool seq)
