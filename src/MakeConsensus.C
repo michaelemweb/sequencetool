@@ -18,6 +18,8 @@ MakeConsensus::MakeConsensus()
 
 struct Contig {
   seq::NTSequence seq;
+  // coverage comes from spades. A contige with hight cov can be trasted more
+  // then many contigs with low ccv.
   double cov;
   int start, end;
 };
