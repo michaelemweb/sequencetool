@@ -1,5 +1,5 @@
 SET(SOURCES
-  Mpf.C
+  Main.C
   Utils.C
   NtAlign.C
   FastaConvert.C
@@ -9,8 +9,8 @@ SET(SOURCES
   ssw.c
 )
 
-ADD_EXECUTABLE(mpf-sequencetool ${SOURCES})
+ADD_EXECUTABLE(sequencetool ${SOURCES})
 
-TARGET_LINK_LIBRARIES(mpf-sequencetool seq)
+TARGET_LINK_LIBRARIES(sequencetool seq)
 
-INSTALL_TARGETS(/bin mpf-sequencetool)
+INSTALL_TARGETS(/bin sequencetool)
