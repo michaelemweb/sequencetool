@@ -1,5 +1,5 @@
 # sequencetool
-Command line tool for fasta sequences has options for nt-align, consensus-align and make-consensus.
+Command line tool for fasta sequences alingment. 
 
 Options: nt-align, consensus-align and make-consensus.
 
